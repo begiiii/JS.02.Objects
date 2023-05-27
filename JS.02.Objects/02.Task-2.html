@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //         Задание 2
+      // Создать объект, хранящий в себе отдельно числитель и знаменатель дроби, и следующие функции для работы с этим объектом.
+      // 1. Функция сложения 2-х объектов-дробей.
+      // 2. Функция вычитания 2-х объектов-дробей.
+      // 3. Функция умножения 2-х объектов-дробей.
+      // 4. Функция деления 2-х объектов-дробей.
+      // 5. Функция сокращения объекта-дроби.
+
+      function Fraction(numerator, denominator) {
+        this.numerator = numerator;
+        this.denominator = denominator;
+
+        this.add = function (other) {
+          n =
+            this.numerator * other.denominator +
+            other.numerator * this.denominator;
+          d = this.denominator * this.denominator;
+          return new Fraction(n, d).reduceFraction();
+        };
+
+        this.sub = function (other) {
+          n =
+            this.numerator * other.denominator -
+            other.numerator * this.denominator;
+          d = this.denominator * this.denominator;
+          return new Fraction(n, d).reduceFraction();
+        };
+
+        this.mul = function (other) {
+          n = this.numerator * other.numerator;
+          d = this.denominator * other.denominator;
+          return new Fraction(n, d).reduceFraction();
+        };
+
+        this.truediv = function (other) {
+          n = this.numerator * other.denominator;
+          d = this.denominator * other.numerator;
+          return new Fraction(n, d).reduceFraction();
+        };
+
+        function findDivisors(n) {
+          let divisors = [];
+          for (let i = 0; i < n; i++) {
+            if (n % i == 0) {
+              divisors.push(i);
+            }
+          }
+          return divisors;
+        }
+
+        this.reduceFraction = function () {
+          let n = findDivisors(this.numerator);
+          let d = findDivisors(this.denominator);
+
+          let max = Math.max(...n.filter((i) => d.includes(i)));
+
+          this.numerator /= max;
+          this.denominator /= max;
+
+          return this;
+        };
+
+        this.output = function () {
+          return `${this.numerator}/${this.denominator}`;
+        };
+      }
+
+      let f1 = new Fraction(32, 48);
+      let f2 = new Fraction(12, 28);
+
+      let f3 = f1.add(f2);
+
+      console.log(f3);
+      console.log(`f3.output() = ${f3.output()}`);
+
+      console.log(
+        `new Fraction(1002, 8024) = ${new Fraction(1002, 8024)
+          .reduceFraction()
+          .output()}`
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*Задание 3
+              Создать объект, описывающий время (часы, минуты, секунды), и следующие функции для работы с этим объектом.
+              1. Функция вывода времени на экран.
+              2. Функция изменения времени на переданное количество
+              секунд.
+              3. Функция изменения времени на переданное количество
+              минут.
+              4. Функция изменения времени на переданное количество
+              часов.
+              Учтите, что в последних 3-х функциях, при изменении одной
+              части времени, может измениться и другая. Например: если ко
+              времени «20:30:45» добавить 30 секунд, то должно получиться
+              «20:31:15», а не «20:30:75».*/
+
+      function Time(hour, min, sec) {
+        this.hour = hour;
+        this.min = min;
+        this.sec = sec;
+
+        function checkNumbers(num) {
+          return num >= 0 && num <= 9 ? `0${num}` : num;
+        }
+
+        this.showTime = function () {
+          return `${checkNumbers(this.hour)}:${checkNumbers(
+            this.min
+          )}:${checkNumbers(this.sec)}`;
+        };
+        // this.convertToSec = function () {
+        //   return this.sec + this.min * 60 + this.hour * 60 * 60;
+        // };
+        // this.convertToMin = function () {
+        //   return this.min + this.sec / 60 + this.hour * 60;
+        // };
+        // this.convertToHour = function () {
+        //   return this.hour + this.sec / 3600 + this.min / 60;
+        // };
+
+        this.addSec = function (s) {
+          let m,
+            h = 0;
+          s += this.sec;
+          //если сумма переданной перем. и объекта.sec >=60,
+          if (s >= 60) {
+            //то лишние секунды конвертируем в минуты,
+            m = parseInt(s / 60);
+            //а остататки это и есть секунды
+            s %= 60;
+            m += this.min;
+            if (m >= 60) {
+              h = parseInt(m / 60);
+              m %= 60;
+            }
+            return new Time(this.hour + h, m, s);
+          }
+          return new Time(this.hour, this.min, s);
+        };
+
+        this.addMin = function (m) {
+          let h = 0;
+          m += this.min;
+          if (m >= 60) {
+            h = parseInt(m / 60);
+            m %= 60;
+          }
+          return new Time(this.hour + h, m, this.sec);
+        };
+
+        this.addHour = function (h) {
+          return new Time(this.hour + h, this.min, this.sec);
+        };
+      }
+
+      let t1 = new Time(20, 30, 45);
+      console.log("Секунды :");
+      console.log(`${t1.showTime()} +5сек : \t${t1.addSec(5).showTime()}`);
+      console.log(`${t1.showTime()} +15сек : \t${t1.addSec(15).showTime()}`);
+      console.log(`${t1.showTime()} +25сек : \t${t1.addSec(25).showTime()}`);
+      console.log(`${t1.showTime()} +60сек : \t${t1.addSec(60).showTime()}`);
+      console.log(`${t1.showTime()} +3600сек : ${t1.addSec(3600).showTime()}`);
+
+      console.log("Минуты :");
+      console.log(`${t1.showTime()} +1мин : \t${t1.addMin(1).showTime()}`);
+      console.log(`${t1.showTime()} +25мин : \t${t1.addMin(25).showTime()}`);
+      console.log(`${t1.showTime()} +30мин : \t${t1.addMin(30).showTime()}`);
+      console.log(`${t1.showTime()} +60мин : \t${t1.addMin(60).showTime()}`);
+      console.log(`${t1.showTime()} +3600мин : ${t1.addMin(3600).showTime()}`);
+
+      console.log("Часы :");
+      console.log(`${t1.showTime()} +1ч : \t\t${t1.addHour(1).showTime()}`);
+      console.log(`${t1.showTime()} +25ч : \t${t1.addHour(25).showTime()}`);
+      console.log(`${t1.showTime()} +60ч : \t${t1.addHour(60).showTime()}`);
+    </script>
+  </body>
+</html>
